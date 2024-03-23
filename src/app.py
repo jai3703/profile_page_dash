@@ -1,25 +1,42 @@
-from dash import Dash, html, dcc, callback, Output, Input
-import plotly.express as px
-import pandas as pd
+import dash
+from dash import dcc
+from dash import html
 
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
+# Create a Dash app
+app = dash.Dash(__name__)
 
-app = Dash(__name__)
-server = app.server
+# Define the layout of the app
+app.layout = html.Div(children=[
+    html.H1(children='My Portfolio'),
 
-app.layout = html.Div([
-    html.H1(children='Title of Dash App', style={'textAlign':'center'}),
-    dcc.Dropdown(df.country.unique(), 'Canada', id='dropdown-selection'),
-    dcc.Graph(id='graph-content')
+    # Navigation bar
+    html.Div(children=[
+        html.Div(children='Home'),
+        html.Div(children='About'),
+        html.Div(children='Projects'),
+        html.Div(children='Contact'),
+    ]),
+
+    # Main content area
+    html.Div(children=[
+        html.Div(children=[
+            html.H2(children='About Me'),
+            html.P("Welcome to my portfolio website. I'm passionate about data science and web development."),
+            html.P("I have experience in Python, machine learning, web development, etc."),
+        ]),
+
+        html.Div(children=[
+            html.H2(children='My Projects'),
+            # Placeholder for project cards or links
+        ]),
+
+        html.Div(children=[
+            html.H2(children='Contact Me'),
+            html.P("Feel free to reach out to me via email at example@example.com."),
+        ]),
+    ])
 ])
 
-@callback(
-    Output('graph-content', 'figure'),
-    Input('dropdown-selection', 'value')
-)
-def update_graph(value):
-    dff = df[df.country==value]
-    return px.line(dff, x='year', y='pop')
-
+# Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run_server(debug=True)
