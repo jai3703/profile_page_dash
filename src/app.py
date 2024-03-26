@@ -1,3 +1,4 @@
+# import required libraries
 import dash
 from dash import dcc
 from dash import html
@@ -8,11 +9,13 @@ from dash_iconify import DashIconify
 
 # Create a Dash app
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.FLATLY])
+
+#Instatntiate server
 server = app.server
 
 # Define the layout of the app
 
-app_header = dbc.NavbarSimple(
+navigation_bar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("HOME", href="#")),
         dbc.NavItem(dbc.NavLink("PORTFOLIO", href="#")),
@@ -30,86 +33,92 @@ app_header = dbc.NavbarSimple(
         ),
     ],
     brand="WELCOME",
-    color="secondary",
+    color="primary",
     dark=True,
-    style={'color':'black'}
+    fluid=True
 )
 
-url = 'https://lottie.host/3c1b3811-cf6d-4f69-aa88-095bf40f62ab/7kGlbm7O2I.json'
-options = dict(loop=True, autoplay=True,width = '90%',height='50%')
+intro_banner = html.Div(style={ 'background-image': 'radial-gradient(600px at 357px 3406px, rgba(29, 78, 216, 0.15), transparent 80%)', 
+                             'background-size': 'cover', 'background-repeat': 'no-repeat',
+                             'background-position': 'center', 'height': '80vh'},
+                      children=[
+                          dmc.Center(
+                              style={"height": "100%", "width": "100%"},
+                              children=[
+                                  dmc.Blockquote(
+                                      "Everything we hear is an opinion, not a fact. "
+                                      "Everything we see is a perspective, not the truth.",
+                                      cite="- Marcus Aurelius , Meditations",
+                                      ),
+                                  dmc.Anchor("Click now!", href="https://mantine.dev/"),
+                                  ],
+                                  )
+                                  ]
+                                  )
 
-
-home_page_background = dmc.Grid(
-    [
-        dmc.Col(
-            [
-                #dmc.Space(className='main-space', h=15),
-                de.Lottie(url=url, options=options, isClickToPauseDisabled=True),
-                dmc.Stack(
-                    children=[
-                        dmc.Title('A little bit about me..', style={'color': 'white'}, align='center'),
-                        dmc.Center(
-                            [
-                                dmc.Text(
-                                    children=[
-                                        "I am Data scientist with specialization in Manufacturing Domain "
-                                        "I am also equally passionate about Simulation and Optimization"
-                                    ],
-                                    style={'color': 'white', 'width': '50%'},
-                                    align='center',
-                                    id='main-text'
-                                ),
-                            ]
-                        ),
-                        dcc.Link(
-                            [
-                                dmc.Button(
-                                    'Projects',
-                                    id='start-btn',
-                                    variant='outline',
-                                    color='white',
-                                    size='lg',
-                                    uppercase=True,
-                                    rightIcon=DashIconify(icon='ion:rocket-outline', width=30)
-                                ),
-                                
-                            ],
-                            href='#'
-                        )
-                    ],
-                    align='center',
-                    className='stack-left-container',
-                    spacing=30,
-                    mt=-170
-                )
-            ],
-            md=12, lg=8
-        ),
-        dmc.Col(
-            [
-                dmc.Center(
-                    className='right-container',
-                    id='right-container',
-                    children=[
-                        dmc.Loader(
-                            color="blue",
-                            size="md",
-                            variant="oval"
-                        ),
-                    ]
+left_card =dbc.Card(
+    [ dbc.CardBody(
+            [   html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.H5("Hello, I am", className="card-title"),
+                
+                html.H1(html.B("Jai Kumar Pandey")),
+                html.P([
+                    html.H4("Data Scientist"),
+                    html.Br(),
+                    "I primarily work on complex manufacturing related data and develop end to end solutions.",
+                    html.Br(),
+                    "I also have strong interest and grasp on optimization"
+                     " and simulation techniques and have used a combination of both to solve network optimization problems."] ,
+                    className="card-text",
                 ),
-            ], md=12, lg=4
+            ],
+            style={"height":'100%', 'display':'inline',
+                   'align-items':'center','whiteSpace': 'pre-wrap',
+                   'color':'white',
+                   'fontFamily':'inter'
+                   #'justify-content':'center'
+                   }
         ),
     ],
-    id='home-grid',
-    style={'backgroundColor':'#deddd8','height':'100vh'},
-    className='hide'
+    style={"height":'100%',
+           'display':'flex' ,
+           'align-items':'center', 
+           'justify-content':'center',
+           'backgroundColor':'#0f172a'},
 )
 
+right_card =dbc.Card(
+    [
+        dbc.CardImg(src="/assets/profile_pic.jpg",top=False)
+    ],
+    style={"height":'100%'},
+)
+
+custom_layout_trial = dbc.Container(
+    children= [
+        dbc.Row(children=[
+            dbc.Col(width=8,
+                    children=[left_card]),
+            dbc.Col(width=4,children=[right_card])
+        ])
+    ],
+    style={'height':'100vh'},
+    fluid=True
+)
 app.layout = html.Div(children=[
-    app_header,
-    home_page_background
-])
+    navigation_bar,
+    html.Hr(),
+    custom_layout_trial
+    #intro_banner
+],style={'backgroundColor':'#0f172a'})
 
 # Run the app
 if __name__ == '__main__':
